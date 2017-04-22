@@ -2,6 +2,7 @@ from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from viewJobs.views import home_page
+from django.template.loader import render_to_string
  
 class HomePageTest(TestCase):
     def test_root_url_resolves_to_home_page_view(self): 
