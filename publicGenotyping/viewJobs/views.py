@@ -15,6 +15,7 @@ def home_page(request):
         ssh.close()
         return job_data
     job_data = get_job_data()
-
-
-    return render(request, 'home.html')
+    
+    return render(request, 'home.html', {
+            'new_item_text': request.POST.get('item_text', ''),
+        })

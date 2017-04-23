@@ -19,38 +19,36 @@ class NewVisitorTest(unittest.TestCase):
         # and goes to check out its homepage
         self.browser.get('http://localhost:8000')
 
-        # He notices the page title and header mention PublicGenotyping
-        self.assertIn('Jobs', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('Jobs', header_text)
-               
-        # at the top of the page he can search for a certain sample
-        # and the header changes to reflect this sample
+        # She notices the page title and header mention to-do lists
+        self.assertIn('To-Do', self.browser.title)  
+
+        # She is invited to enter a to-do item straight away
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
-            inputbox.get_attribute('placeholder'), 'Search sample'
+            inputbox.get_attribute('placeholder'),
+                'Enter a to-do item'
         )
 
-        # He types DRR000897 into a text box (one of the sample IDs)
-        inputbox.send_keys("DRR000897")
-        time.sleep(10)
-        # When he hits enter, the page updates, and now the header
-        # says "DRR000897"
-        inputbox.send_keys(Keys.ENTER)
-        self.assertIn('DRR000897', header_text)
+               
+        # She types "Buy peacock feathers" into a text box (Edith's hobby
+        # is tying fly-fishing lures)
+        inputbox.send_keys('Buy peacock feathers')
 
-        # On the homepage, he can see the current running jobs of the pipeline immediatly
+
+        # When she hits enter, the page updates, and now the page lists
+        # "1: Buy peacock feathers" as an item in a to-do list table
+        inputbox.send_keys(Keys.ENTER)
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any('JOBID' in row.text for row in rows)
-        )
-        self.assertTrue(
-            any('job_id' in row.text for row in rows)
-        )
-        # Clicking on the jobs shows which samples they are that are being run
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 
+        # There is still a text box inviting her to add another item. She
+        # enters "Use peacock feathers to make a fly" (Edith is very
+        # methodical)
         self.fail('Finish the test!')
+        
+    
+# The page updates again, and now shows both items on her list
 if __name__ == '__main__': 
     unittest.main(warnings='ignore') 
 
